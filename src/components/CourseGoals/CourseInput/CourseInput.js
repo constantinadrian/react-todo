@@ -1,52 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from '../../UI/Button/Button';
-import './CourseInput.css';
-
-import styled from 'styled-components';
-
-// style components dynamicly
-const FormControl = styled.div`
-    margin: 0.5rem 0;
-
-    & label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 0.5rem;
-
-        // using props
-        color: ${(props) => (props.invalid ? 'red' : 'black')};
-    }
-
-    & input {
-        display: block;
-        width: 100%;
-        // border: 1px solid #ccc;
-        font: inherit;
-        line-height: 1.5rem;
-        padding: 0 0.25rem;
-
-        // using props
-        border: 1px solid ${(props) => (props.invalid ? 'red' : '#ccc')};
-        background: ${(props) => (props.invalid ? '#ffd7d7' : 'transparent')};
-    }
-
-    & input:focus {
-        outline: none;
-        background: #fad0ec;
-        border-color: #8b005d;
-    }
-
-    // when using props we don't need this
-    // &.invalid input {
-    //     border-color: red;
-    //     background: #ffd7d7;
-    // }
-
-    // &.invalid label {
-    //     color: red;
-    // }
-`;
+import styles from './CourseInput.module.css';
 
 const CourseInput = props => {
     const [enteredValue, setEnteredValue] = useState('');
@@ -65,26 +20,25 @@ const CourseInput = props => {
             setIsValid(false);
             return;
         }
-        props.onAddGoal(enteredValue);
+
+        const newGoal = enteredValue
+
+        props.onAddGoal(newGoal);
 
         setEnteredValue('');
     };
 
-    // style components dynamicly
+    // using CSS module by applying the css dynamic (e.g.: className={styles.button})
     return (
         <form onSubmit={formSubmitHandler}>
-            {/* using props */}
-            <FormControl invalid={!isValid}>
-
-            {/* using classname */}
-            {/* <FormControl className={!isValid && 'invalid'}> */}
-            {/* <FormControl className={` ${!isValid ? 'invalid' : ''}`}> */}
+            <div className={`${styles['form-control']} ${!isValid && styles.invalid}`}>
+            {/* <div className={`${styles['form-control']} ${!isValid ? styles.invalid : ''}`}> */}
                 <label>Course Goal</label>
                 <input 
-                    type="text"
+                    type="text" 
                     value={enteredValue}
                     onChange={goalInputChangeHandler} />
-            </FormControl>
+            </div>
             <Button type="submit">Add Goal</Button>
         </form>
     );
